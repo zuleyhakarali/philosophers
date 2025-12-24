@@ -69,21 +69,3 @@ long for_time(void)
     gettimeofday(&tv, NULL);
     return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
-
-void for_sleep(long long time, t_arg *arg)
-{
-    long long s;
-
-    s = for_time();
-    while (for_time() - s < time)
-    {
-        pthread_mutex_lock(&arg->dpn_lock);
-        if (arg->dead_philo_num == 1)
-        {
-            pthread_mutex_unlock(&arg->dpn_lock);
-            break;
-        }
-        pthread_mutex_unlock(&arg->dpn_lock);
-        usleep(100);
-    }
-}

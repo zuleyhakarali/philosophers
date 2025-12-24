@@ -29,9 +29,11 @@ typedef struct s_arg
     int must_eat_c;
     long start_time;
     int dead_philo_num;
+    int ate;
     pthread_mutex_t print_w;
     pthread_mutex_t *fork;
     pthread_mutex_t dpn_lock;
+    pthread_mutex_t c_lock;
     pthread_t check;
     t_philo *philo;
 } t_arg;

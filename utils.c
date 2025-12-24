@@ -20,6 +20,7 @@ t_arg *placement(int ac, char **av)
         error();
     arg->dead_philo_num = 0;
     arg->start_time = for_time();
+    arg->ate = 0;
     return (arg);
 }
 
@@ -58,22 +59,15 @@ t_philo *for_philo(t_arg *arg)
     return (arg->philo);
 }
 
-static int for_check(t_arg *a, int i)
+static int for_check(t_arg *a, int i, long time)
 {
-    long time;
     long for_meal;
 
-    time = for_time();
     pthread_mutex_lock(&a->philo[i].meal);
     for_meal = a->philo[i].last_eat;
     pthread_mutex_unlock(&a->philo[i].meal);
-    if (time - for_meal > a->die_time + 2)
+    if (time - for_meal > a->die_time)
     {
-        pthread_mutex_lock(&a->print_w);
-    printf("DEBUG DIE: now=%ld last=%ld diff=%ld die_time=%ld ph=%d\n",
-           time - a->start_time, for_meal - a->start_time, time - for_meal, a->die_time, i + 1);
-    pthread_mutex_unlock(&a->print_w);
-
         pthread_mutex_lock(&a->print_w);
         pthread_mutex_lock(&a->dpn_lock);
         a->dead_philo_num = 1;
@@ -90,15 +84,17 @@ void *check(void *arg)
     t_arg *a;
     int i;
     int c;
+    long time;
 
     a = (t_arg *)arg;
     while (1)
     {
+        time = for_time();
         i = 0;
         c = 0;
         while (i < a->num_of_philo)
         {
-            if (for_check(a, i) == 1)
+            if (for_check(a, i, time) == 1)
                 return (NULL);
             if (a->must_eat_c != -1 && a->philo[i].eat_c >= a->must_eat_c)
                 c++;
@@ -106,12 +102,12 @@ void *check(void *arg)
         }
         if (c == a->num_of_philo)
         {
-            pthread_mutex_lock(&a->dpn_lock);
-            a->dead_philo_num = 1;
-            pthread_mutex_unlock(&a->dpn_lock);
+            pthread_mutex_lock(&a->c_lock);
+            a->ate = 1;
+            pthread_mutex_unlock(&a->c_lock);
             return (NULL);
         }
-        usleep(100);
+        usleep(200);
     }
     return (NULL);
 }
