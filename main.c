@@ -49,11 +49,11 @@ static void eating(t_philo *p)
     pthread_mutex_lock(&p->meal);
     p->last_eat = for_time();
     pthread_mutex_unlock(&p->meal);
+    p->eat_c++;
     print(p->arg, p->l_fork + 1, "has taken a fork");
     print(p->arg, p->l_fork + 1, "has taken a fork");
     print(p->arg, p->l_fork + 1, "is eating");
     usleep(p->arg->eat_time * 1000);
-    p->eat_c++;
     pthread_mutex_unlock(&p->arg->fork[p->r_fork]);
     pthread_mutex_unlock(&p->arg->fork[p->l_fork]);
 }
@@ -97,8 +97,6 @@ static void *ft(void *philo)
     while (1)
     {
         eating(p);
-        if (p->arg->must_eat_c != -1 && p->arg->must_eat_c == p->eat_c)
-            break;
         if (is_dead(p->arg) == 1 || is_over(p->arg) == 1)
             break;
         print(p->arg, p->l_fork + 1, "is sleeping");

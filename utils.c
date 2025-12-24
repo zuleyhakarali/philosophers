@@ -12,7 +12,7 @@ t_arg *placement(int ac, char **av)
     arg->eat_time = ft_atoi(av[3]);
     arg->sleep_time = ft_atoi(av[4]);
     if (ac == 5)
-        arg->must_eat_c = -1;
+        arg->must_eat_c = 0;
     else
         arg->must_eat_c = ft_atoi(av[5]);
     if (arg->die_time <= 60 || arg->eat_time <= 60 ||
@@ -96,7 +96,7 @@ void *check(void *arg)
         {
             if (for_check(a, i, time) == 1)
                 return (NULL);
-            if (a->must_eat_c != -1 && a->philo[i].eat_c >= a->must_eat_c)
+            if (a->must_eat_c != 0 && a->philo[i].eat_c >= a->must_eat_c)
                 c++;
             i++;
         }
