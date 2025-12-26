@@ -26,19 +26,19 @@ static void eating(t_philo *p)
     pthread_mutex_unlock(&p->arg->fork[p->l_fork]);
 }
 
-void thinking(t_philo *p)
+static void thinking(t_philo *p)
 {
     long t_time;
-    long max_time;
-
+    long max_t;
 
     print(p->arg, p->l_fork + 1, "is thinking");
     if (p->arg->num_of_philo % 2 != 0)
     {
-        t_time = p->arg->eat_time * 0.8;
-        max_time = p->arg->eat_time > p->arg->sleep_time ? 
-                       p->arg->eat_time : p->arg->sleep_time;
-        t_time = (max_time * 2) / 5;
+        if (p->arg->eat_time > p->arg->sleep_time)
+            max_t = p->arg->eat_time;
+        else
+            max_t = p->arg->sleep_time;
+        t_time = (max_t * 2) / 5;
         if (t_time > 100)
             t_time = 100;
         if (t_time < 1)
@@ -47,11 +47,8 @@ void thinking(t_philo *p)
     }
 }
 
-int for_extra(t_philo *p)
+static int for_extra(t_philo *p)
 {
-    //pthread_mutex_lock(&p->meal);
-    //p->last_eat = for_time();
-    //pthread_mutex_unlock(&p->meal);
     if (one_philo(p) == 1)
         return (1);
     if ((p->l_fork + 1) % 2 == 0)

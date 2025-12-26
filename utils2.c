@@ -14,7 +14,6 @@ void for_thread(t_arg *arg, t_philo *philo)
         pthread_create(&philo[i].t_id, NULL, ft, &philo[i]);
         i++;
     }
-    //usleep(1000);
     pthread_create(&arg->check, NULL, check, arg);
 }
 

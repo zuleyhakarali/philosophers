@@ -19,7 +19,6 @@ t_arg *placement(int ac, char **av)
         arg->sleep_time <= 60)
         error();
     arg->dead_philo_num = 0;
-    //arg->start_time = 0;
     arg->ate = 0;
     return (arg);
 }
