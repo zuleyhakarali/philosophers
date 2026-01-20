@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zkarali <zkarali@student.42istanbul.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/20 11:34:54 by zkarali           #+#    #+#             */
+/*   Updated: 2026/01/20 12:33:19 by zkarali          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static int	for_mutex(t_arg *arg)
@@ -17,7 +29,6 @@ static int	for_thread(t_arg *arg, t_philo *philo)
 
 	i = -1;
 	arg->start_time = for_time();
-	usleep(100);
 	while (++i < arg->num_of_philo)
 	{
 		pthread_mutex_lock(&arg->philo[i].last_eat_c);
